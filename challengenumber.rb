@@ -1,9 +1,8 @@
 # Generates random number for user ot guess
 # Use "guess" method to attempt to find number
 # Use "tell" method  to end game an get number
-
 class ChallengeNumber
-  attr_reader :min_num, :max_num, :trys, :win :done,
+  attr_reader :min_num, :max_num, :trys, :win, :done
 
   def initialize(min_num = 0, max_num = min_num + 100)
     self.min_num = min_num
@@ -13,6 +12,7 @@ class ChallengeNumber
     @trys = 0
     @done = false
     @win = false
+    # if done is true and win is false indicates game loss
   end
 
   def guess(integer)
@@ -27,6 +27,7 @@ class ChallengeNumber
   end
 
   def tell
+    # ends game with loss
     @done = true
     @number
   end
@@ -47,3 +48,5 @@ class ChallengeNumber
     @max_num = integer
   end
 end
+
+example = ChallengeNumber.new
