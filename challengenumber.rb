@@ -54,39 +54,35 @@ class ChallengeNumber
 end
 
 # Game start
-# TODO: Move case logic into input processing class
 MIN = 0
 MAX = 100
 MIN.freeze
 MAX.freeze
 game = ChallengeNumber.new(MIN, MAX)
 puts 'Do you want to play a game?'
-puts "Select a number between #{game.min_num} and #{game.max_num}"
-until game.done do
-  puts "Select a number between #{game.min_num} and #{game.max_num}"
+
+until game.done
+  puts "Select a integer between #{game.min_num} and #{game.max_num}"
   input = gets.strip
-  case input
-  when /-0/ # prevent invalid negative number (-05 or -0)
-    puts "Try again: #{input} malformed number"
-  when /^-?[[:digit:]]*$/ # valid integer
-    # checks range
-    input = input.to_i
-    if input.between?(game.min_num, game.max_num)
-      value = case game.guess(input)
-      when -1 then 'Lower'
-      when 0 then 'Correct!'
-      when 1 then 'Higher'
-      end
-      puts "#{input} is #{value}, attempt# #{game.trys}"
-    else
-      puts "Try again: #{input} is out of range"
-    end
-  when 'Q!' then puts "Game over, Answer is: #{game.tell}" # quit game
-  when 'N!'
-    puts 'New Game'
-    game.new! # new game
-  else
-    puts "Try again: #{input} invalid entry"
+  input = case input
+          when 'Q!'
+            puts "Game over, Answer was: #{game.tell}" # quit game
+            false
+          when 'N!'
+            puts 'New Game'
+            game.new! # new game
+            false
+          else
+            Integer(input) rescue false
+          end
+
+  if input && input.between?(game.min_num, game.max_num)
+    value = case game.guess(input)
+            when -1 then 'Lower'
+            when 0 then 'Correct!'
+            when 1 then 'Higher'
+            end
+    puts "#{input} is #{value}, attempt# #{game.trys}"
   end
 end
 exit
