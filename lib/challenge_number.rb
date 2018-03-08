@@ -52,37 +52,3 @@ class ChallengeNumber
     @max_num = integer
   end
 end
-
-# Game start
-MIN = 0
-MAX = 100
-MIN.freeze
-MAX.freeze
-game = ChallengeNumber.new(MIN, MAX)
-puts 'Do you want to play a game?'
-
-until game.done
-  puts "Select a integer between #{game.min_num} and #{game.max_num}"
-  input = gets.strip
-  input = case input
-          when 'Q!'
-            puts "Game over, Answer was: #{game.tell}" # quit game
-            false
-          when 'N!'
-            puts 'New Game'
-            game.new! # new game
-            false
-          else
-            Integer(input) rescue false
-          end
-
-  if input && input.between?(game.min_num, game.max_num)
-    value = case game.guess(input)
-            when -1 then 'Lower'
-            when 0 then 'Correct!'
-            when 1 then 'Higher'
-            end
-    puts "#{input} is #{value}, attempt# #{game.trys}"
-  end
-end
-exit
