@@ -4,11 +4,11 @@
 class ChallengeNumber
   attr_reader :min_num, :max_num, :trys, :win, :done
 
-  def initialize(min_num, max_num)
+  def initialize(min_num, max_num, overide = nil)
     self.min_num = min_num
     self.max_num = max_num
     raise RangeError => "#{@min_num} < #{@max_num}" unless @min_num < @max_num
-    new_game!
+    new_game!(overide)
   end
 
   def guess(integer)
@@ -33,7 +33,7 @@ class ChallengeNumber
       ensure_i(integer)
       @number = integer
     else
-      @number = (@min_num + Random.rand(@max_num))
+      @number = rand(@min_num .. @max_num)
     end
     @trys = 0
     @done = false
