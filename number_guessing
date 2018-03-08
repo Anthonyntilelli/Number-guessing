@@ -25,7 +25,7 @@ until game.done
             false
           when 'N!'
             puts 'New Game'
-            game.new! # new game
+            game.new_game! # new game
             false
           else
             Integer(input) rescue false

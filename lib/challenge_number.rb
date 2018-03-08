@@ -8,7 +8,7 @@ class ChallengeNumber
     self.min_num = min_num
     self.max_num = max_num
     raise RangeError => "#{@min_num} < #{@max_num}" unless @min_num < @max_num
-    new!
+    new_game!
   end
 
   def guess(integer)
@@ -28,8 +28,13 @@ class ChallengeNumber
     @number
   end
 
-  def new!
-    @number = (@min_num + Random.rand(@max_num))
+  def new_game!(integer = nil)
+    if integer
+      ensure_i(integer)
+      @number = integer
+    else
+      @number = (@min_num + Random.rand(@max_num))
+    end
     @trys = 0
     @done = false
     @win = false
