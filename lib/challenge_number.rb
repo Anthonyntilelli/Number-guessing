@@ -1,19 +1,35 @@
-# Generates random number for user ot guess
-# Use "guess" method to attempt to find number
-# Use "tell" method  to end game an get number
+################################################################################
+#: Title        : ChallengeNumber
+#: Author       : Anthony Tilelli
+#: Description  : Generates random number for user ot guess
+#: Main Methods :
+#:      #guess - return if integer is higher,lower or is number and tracks tries
+#:      #tell - end game with loss and returns number
+#:      #new_game! - reset number, tries win and done
+#:      #tries - count of attempt made to guess number
+#:      #win - did player with> (T/F)
+#:      #done - is game over? (T/F)
+#:      if done == true and win == false, this indicates a loss
+################################################################################
 class ChallengeNumber
-  attr_reader :min_num, :max_num, :trys, :win, :done
+  attr_reader :min_num, :max_num, :tries, :win, :done
 
   def initialize(min_num, max_num, overide = nil)
+    # use overide to force number
     self.min_num = min_num
     self.max_num = max_num
     raise RangeError => "#{@min_num} < #{@max_num}" unless @min_num < @max_num
     new_game!(overide)
   end
 
+  # method used for user to attempt to find number ad track tries
+  # retun -1 when integer is Lower then number
+  # return 1 when integer is Higher then number
+  # return 0 when integer == number
+  # Guessing can still be used but will not increment tries after finding number
   def guess(integer)
     ensure_i(integer)
-    @trys += 1 if @done == false
+    @tries += 1 if @done == false
     compare = @number <=> integer
     if compare.zero? && !@done
       @done = true
@@ -22,23 +38,23 @@ class ChallengeNumber
     compare
   end
 
+  #  end game with loss and returns number
   def tell
-    # ends game with loss
     @done = true
     @number
   end
 
-  def new_game!(integer = nil)
-    if integer
-      ensure_i(integer)
-      @number = integer
+  # Resets number and tries within the prevous number range
+  def new_game!(overide = nil)
+    if overide # use overide to force number
+      ensure_i(overide)
+      @number = overide
     else
-      @number = rand(@min_num .. @max_num)
+      @number = rand(@min_num..@max_num)
     end
-    @trys = 0
+    @tries = 0
     @done = false
     @win = false
-    # if done is true and win is false indicates game loss
   end
 
   private
