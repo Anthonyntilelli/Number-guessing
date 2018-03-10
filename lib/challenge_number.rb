@@ -26,9 +26,11 @@ class ChallengeNumber
   # retun -1 when integer is Lower then number
   # return 1 when integer is Higher then number
   # return 0 when integer == number
+  # return false when integer is out off range (does not count as try)
   # Guessing can still be used but will not increment tries after finding number
   def guess(integer)
     ensure_i(integer)
+    return false unless integer.between?(@min_num, @max_num)
     @tries += 1 if @done == false
     compare = @number <=> integer
     if compare.zero? && !@done

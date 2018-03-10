@@ -48,13 +48,14 @@ until game.done
           end
           #input is false when user didn't provide number
 
-  if input && input.between?(game.min_num, game.max_num)
+  if input
     hint = case game.guess(input)
-            when -1 then 'Lower'
-            when 0 then 'Correct!'
-            when 1 then 'Higher'
-            end
-    puts "#{input} is #{hint}, attempt# #{game.tries}"
+           when -1 then "Lower, attempt# #{game.tries}"
+           when 0 then "Correct!, attempt# #{game.tries}"
+           when 1 then "Higher, attempt# #{game.tries}"
+           when false then "Out of Range"
+           end
+    puts "#{input} is #{hint}"
   end
 end
 exit
