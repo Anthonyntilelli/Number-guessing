@@ -1,31 +1,39 @@
 ################################################################################
 #: Title       : Number_guessing
 #: Author      : Anthony Tilelli
-#: Description : Commandline game where user guesss a hidden number within a range
-#:               Game provides hints if guess is higher/lower when hidden number
+#: Description : Commandline game where user guesss a hidden number within a
+#:             : range. Game provides hints telling user of their guess is
+#:             : higher or lower to hidden number
 ################################################################################
 require 'optparse'
 require_relative 'lib/challenge_number.rb'
 
-#Defaults
+# returns number or false (invalid)
+def convert_integer(var)
+  Integer(var, 10)
+rescue ArgumentError
+  false
+end
+
+# Defaults
 lowest_number = 0
 highest_number = 100
 debug = nil
 
 OptionParser.new do |parser|
   parser.banner = 'Usage: number_guessing [options]'
-  parser.on("-m", '--min INTEGER', Integer ,'Set Minimum number') do |min|
+  parser.on('-m', '--min INTEGER', Integer, 'Set Minimum number') do |min|
     lowest_number = min
   end
   parser.on('-M', '--Max INTEGER', Integer, 'Set Maximum number') do |max|
     highest_number = max
   end
-  parser.on('-D', '--Debug INTEGER', Integer, 'Debug mode: set number to be guessed') do |secret|
+  parser.on('-D', '--Debug INTEGER', Integer, 'Set hidden number') do |secret|
     debug = secret
   end
   parser.on('-h', '--help', 'Prints this help') do
-   puts parser
-   exit
+    puts parser
+    exit
   end
 end.parse!
 
@@ -44,18 +52,17 @@ until game.done
             game.new_game!(debug)
             false
           else
-            Integer(input) rescue false
+            convert_integer(input)
           end
-          #input is false when user didn't provide number
 
-  if input
-    hint = case game.guess(input)
-           when -1 then "Lower, attempt# #{game.tries}"
-           when 0 then "Correct!, attempt# #{game.tries}"
-           when 1 then "Higher, attempt# #{game.tries}"
-           when false then "Out of Range"
-           end
-    puts "#{input} is #{hint}"
-  end
+  # input is false when user didn't provide number
+  next unless input
+  hint = case game.guess(input)
+         when -1 then "too High, attempt# #{game.tries}"
+         when 0 then "Correct!, attempt# #{game.tries}"
+         when 1 then "too Low, attempt# #{game.tries}"
+         when false then 'Out of Range'
+         end
+  puts "#{input} is #{hint}"
 end
 exit
