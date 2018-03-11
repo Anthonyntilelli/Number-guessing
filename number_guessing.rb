@@ -12,6 +12,7 @@ require_relative 'lib/challenge_number.rb'
 def convert_integer(var)
   Integer(var, 10) # allow base 10 only
 rescue ArgumentError
+  puts "Invalid Input => #{var}"
   false
 end
 
@@ -20,29 +21,36 @@ lowest_number = 0
 highest_number = 100
 debug = nil
 
-OptionParser.new do |parser|
-  parser.banner = 'Usage: number_guessing [options]'
-  parser.on('-m', '--min INTEGER', Integer, 'Set Minimum number') do |min|
-    lowest_number = min
-  end
-  parser.on('-M', '--Max INTEGER', Integer, 'Set Maximum number') do |max|
-    highest_number = max
-  end
-  parser.on('-D', '--Debug INTEGER', Integer, 'Set hidden number') do |secret|
-    debug = secret
-  end
-  parser.on('-h', '--help', 'Prints this help') do
-    puts parser
-    exit
-  end
-end.parse!
+begin
+  OptionParser.new do |parser|
+    parser.banner = 'Usage: number_guessing [options]'
+    parser.on('-m', '--min INTEGER', Integer, 'Set Minimum number') do |min|
+      lowest_number = min
+    end
+    parser.on('-M', '--Max INTEGER', Integer, 'Set Maximum number') do |max|
+      highest_number = max
+    end
+    parser.on('-D', '--Debug INTEGER', Integer, 'Set hidden number') do |secret|
+      debug = secret
+    end
+    parser.on('-h', '--help', 'Prints this help') do
+      puts parser
+      exit
+    end
+  end.parse!
+  # catch all for non-switch inputs
+  raise ArgumentError, "Invalid command Line options #{ARGV}" unless ARGV.empty?
+rescue StandardError => e
+  $stdout.puts e.message
+  exit 3
+end
 
 game = ChallengeNumber.new(lowest_number, highest_number, debug)
 puts 'Do you want to play a game?'
 
 until game.done
   puts "Select a integer between #{game.min_num} and #{game.max_num}"
-  input = gets.strip
+  input = $stdin.gets.chomp
   input = case input
           when 'Q!'
             puts "Game over, Answer was: #{game.tell}" # quit game

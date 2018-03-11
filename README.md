@@ -40,6 +40,7 @@ Input:
 
      0 Success
      1 General Failure or incorrect parameter provided (varied Message)
+     3 Invalid Command line arguments (varied message)
 
 ## Authors:                  <a name="Authors"></a>
 
