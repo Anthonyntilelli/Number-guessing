@@ -41,6 +41,7 @@ Input:
      0 Success
      1 General Failure or incorrect parameter provided (varied Message)
      3 Invalid Command line arguments (varied message)
+     4 Invalid input after guess
 
 ## Authors:                  <a name="Authors"></a>
 

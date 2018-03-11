@@ -5,16 +5,18 @@
 #: Main Methods :
 #:      #guess - returns if guess is higher,lower or correct and tracks tries
 #:      #tell - end game with loss and returns hidden_number
-#:      #new_game! - reset hidden_number, tries, win and done
+#:      #new_game! - reset hidden_number, tries and win
 #:      #tries - count of attempt made to guess hidden_number
-#:      #win - did player with> (T/F)
-#:      #done - is game over? (T/F)
+#:      #win - is game over (win/loss) or ongong
+#:      #convert_integer - converts input to base 10 integer for use in game
+#:                         returns 'nil' if invalid input
 #: Win/Loss :
-#:      when when (done == true and win == true)
-#:      Loss when (done == true and win == false)
+#:      gme ongoing when win == nil
+#:      win when win == true
+#:      Loss when  win == false
 ################################################################################
 class ChallengeNumber
-  attr_reader :min_num, :max_num, :tries, :win, :done
+  attr_reader :min_num, :max_num, :tries, :win
 
   def initialize(min_num, max_num, overide = nil)
     # use overide to force hidden_number
@@ -28,29 +30,28 @@ class ChallengeNumber
   # retun -1 when integer is Lower then hidden_number
   # return 1 when integer is Higher then hidden_number
   # return 0 when integer == hidden_number
-  # return false when integer is out off range (does not count as try)
+  # return false when integer is out of range(doesn't increment try) or invalid
   # finding hidden_number ends game
   # will not increment tries after game end
   # will still return -1,0,1 after game end
   def guess(integer)
-    ensure_i(integer)
-    return false unless integer.between?(@min_num, @max_num)
-    @tries += 1 if @done == false
+    integer = convert_integer(integer)
+
+    # also checks for nil
+    return false unless integer&.between?(@min_num, @max_num)
+    @tries += 1 if @win.nil?
     compare = @hidden_number <=> integer
-    if compare.zero? && !@done
-      @done = true
-      @win = true
-    end
+    @win = true if compare.zero?
     compare
   end
 
   #  end game with loss and returns hidden_number
   def tell
-    @done = true
+    @win = false
     @hidden_number
   end
 
-  #  reset hidden_number, tries, win, and done
+  #  reset hidden_number, tries, and win
   def new_game!(overide = nil)
     if overide # use overide to force hidden_number
       ensure_i(overide)
@@ -59,8 +60,14 @@ class ChallengeNumber
       @hidden_number = rand(@min_num..@max_num)
     end
     @tries = 0
-    @done = false
-    @win = false
+    @win = nil
+  end
+
+  # converts to base 10 integer or returns nil
+  def convert_integer(var)
+    Integer(var, 10) # allow base 10 only
+  rescue ArgumentError
+    nil
   end
 
   private

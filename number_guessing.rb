@@ -8,14 +8,6 @@
 require 'optparse'
 require_relative 'lib/challenge_number.rb'
 
-# returns number or false (invalid)
-def convert_integer(var)
-  Integer(var, 10) # allow base 10 only
-rescue ArgumentError
-  puts "Invalid Input => #{var}"
-  false
-end
-
 # Defaults
 lowest_number = 0
 highest_number = 100
@@ -48,29 +40,34 @@ end
 game = ChallengeNumber.new(lowest_number, highest_number, debug)
 puts 'Do you want to play a game?'
 
-until game.done
+while game.win.nil?
   puts "Select a integer between #{game.min_num} and #{game.max_num}"
   input = $stdin.gets.chomp
-  input = case input
-          when 'Q!'
-            puts "Game over, Answer was: #{game.tell}" # quit game
-            false
-          when 'N!'
-            puts 'New Game'
-            game.new_game!(debug)
-            false
-          else
-            convert_integer(input)
-          end
+  case input
+  when 'Q!'
+    puts "Game over, Answer was: #{game.tell}" # quit game
+    exit
+  when 'N!'
+    puts 'New Game'
+    game.new_game!(debug)
+    next
+  else
+    input = game.guess(input)
+    unless input
+       puts "Try again: Invalid Input (base 10 integer only) or out of range"
+       next
+    end
+  end
 
-  # input is false when user didn't provide number
-  next unless input
-  hint = case game.guess(input)
-         when -1 then "too High, attempt# #{game.tries}"
-         when 0 then "Correct!, attempt# #{game.tries}"
-         when 1 then "too Low, attempt# #{game.tries}"
-         when false then 'Out of Range'
+  hint = case input
+         when -1 then "Try a lower number, attempt# #{game.tries}"
+         when 0 then "You win, attempt# #{game.tries}"
+         when 1 then "Try a higher number, attempt# #{game.tries}"
+         else
+           #this condition should never be invoked
+           $stdout.puts "Invalid input after guess"
+           exit 4
          end
-  puts "#{input} is #{hint}"
+  puts hint
 end
 exit
