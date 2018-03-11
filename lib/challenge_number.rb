@@ -5,11 +5,13 @@
 #: Main Methods :
 #:      #guess - returns if guess is higher,lower or correct and tracks tries
 #:      #tell - end game with loss and returns hidden_number
-#:      #new_game! - reset hidden_number, tries win and done
+#:      #new_game! - reset hidden_number, tries, win and done
 #:      #tries - count of attempt made to guess hidden_number
 #:      #win - did player with> (T/F)
 #:      #done - is game over? (T/F)
-#:      if done == true and win == false, this indicates a loss
+#: Win/Loss :
+#:      when when (done == true and win == true)
+#:      Loss when (done == true and win == false)
 ################################################################################
 class ChallengeNumber
   attr_reader :min_num, :max_num, :tries, :win, :done
@@ -48,7 +50,7 @@ class ChallengeNumber
     @hidden_number
   end
 
-  # Resets hidden_number and tries within the prevous hidden_number range
+  #  reset hidden_number, tries, win, and done
   def new_game!(overide = nil)
     if overide # use overide to force hidden_number
       ensure_i(overide)

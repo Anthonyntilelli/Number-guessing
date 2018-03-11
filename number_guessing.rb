@@ -10,7 +10,7 @@ require_relative 'lib/challenge_number.rb'
 
 # returns number or false (invalid)
 def convert_integer(var)
-  Integer(var, 10)
+  Integer(var, 10) # allow base 10 only
 rescue ArgumentError
   false
 end
