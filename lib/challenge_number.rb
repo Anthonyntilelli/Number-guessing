@@ -18,12 +18,12 @@
 class ChallengeNumber
   attr_reader :min_num, :max_num, :tries, :win
 
-  def initialize(min_num, max_num, overide = nil)
-    # use overide to force hidden_number
+  def initialize(min_num, max_num, override = nil)
+    # use override to force hidden_number
     self.min_num = min_num
     self.max_num = max_num
     raise RangeError => "#{@min_num} < #{@max_num}" unless @min_num < @max_num
-    new_game!(overide)
+    new_game!(override)
   end
 
   # method used for user to attempt to find hidden_number ad track tries
@@ -52,10 +52,10 @@ class ChallengeNumber
   end
 
   #  reset hidden_number, tries, and win
-  def new_game!(overide = nil)
-    if overide # use overide to force hidden_number
-      ensure_i(overide)
-      @hidden_number = overide
+  def new_game!(override = nil)
+    if override # use override to force hidden_number
+      ensure_i(override)
+      @hidden_number = override
     else
       @hidden_number = rand(@min_num..@max_num)
     end
