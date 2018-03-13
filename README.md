@@ -5,8 +5,9 @@
 2. [Parameters](#Parameters)
 3. [Examples](#Examples)
 4. [Exit status](#Exit_status)
-5. [Authors](#Authors)
-6. [Reference](#Reference)
+5. [Requirements](Requirements)
+6. [Authors](#Authors)
+7. [Reference](#Reference)
 
 ## Description                <a name="Description"></a>
 
@@ -42,6 +43,10 @@ Input:
      1 General Failure or incorrect parameter provided (varied Message)
      3 Invalid Command line arguments (varied message)
      4 Invalid input after guess
+     
+## Requirements              <a name="requirements"></a>
+
+-  Ruby 2.4+
 
 ## Authors:                  <a name="Authors"></a>
 
