@@ -22,7 +22,7 @@ class ChallengeNumber
     # use override to force hidden_number
     self.min_num = min_num
     self.max_num = max_num
-    raise RangeError => "#{@min_num} < #{@max_num}" unless @min_num < @max_num
+    raise RangeError.new("#{@min_num} < #{@max_num}") unless @min_num < @max_num
     new_game!(override)
   end
 
