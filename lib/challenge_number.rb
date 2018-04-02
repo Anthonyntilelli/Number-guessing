@@ -27,16 +27,17 @@ class ChallengeNumber
   end
 
   # method used for user to attempt to find hidden_number ad track tries
-  # retun -1 when integer is Lower then hidden_number
-  # return 1 when integer is Higher then hidden_number
+  # retun 1 when integer is Lower then hidden_number
+  # return -1 when integer is Higher then hidden_number
   # return 0 when integer == hidden_number
   # return false when integer is out of range(doesn't increment try) or invalid
   # finding hidden_number ends game
   # will not increment tries after game end
   # will still return -1,0,1 after game end
   def guess(integer)
-    integer = convert_integer(integer)
-
+    # converst from sting if not integer
+    # Does not enforce base 10 when integer
+    integer = convert_integer(integer) unless integer.is_a? Integer
     # also checks for nil
     return false unless integer&.between?(@min_num, @max_num)
     @tries += 1 if @win.nil?
