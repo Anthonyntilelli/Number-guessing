@@ -53,14 +53,23 @@ RSpec.describe 'ChallengeNumber ' do
   describe '#tell' do
     context 'when provided a higher number' do
       subject( :quitter ) { ChallengeNumber.new(0, 50, 35) }
-      it 'returns returns 35,, tries == 0 and win == false' do
+      it 'returns 35 and win == false' do
 	 expect(quitter.win).to eql(nil)
 	 expect(quitter.tell).to eql(35)
 	 expect(quitter.win).to eql(false)
       end
     end
   end
+  describe '#new_game!' do
+    context 'when provided a higher number' do
+      subject( :reset ) { ChallengeNumber.new(0, 50, 33) }
+      it 'return tries == 0 and win == nil' do
+	 reset.guess(33)
+	 expect(reset.win).to eql(true) #start with win
+	 reset.new_game!
+	 expect(reset.win).to eql(nil)
+	 expect(reset.tries).to eql(0)
+      end
+    end
+  end
 end
-
-# new_game!
-# convert_integer

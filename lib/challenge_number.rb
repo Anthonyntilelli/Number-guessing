@@ -64,6 +64,8 @@ class ChallengeNumber
     @win = nil
   end
 
+  private
+
   # converts to base 10 integer or returns nil
   def convert_integer(var)
     Integer(var, 10) # allow base 10 only
@@ -71,7 +73,6 @@ class ChallengeNumber
     nil
   end
 
-  private
 
   def ensure_i(integer)
     raise TypeError => 'Not an Integer' unless integer.is_a? Integer

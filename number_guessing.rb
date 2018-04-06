@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 ################################################################################
 #: Title       : Number_guessing
 #: Author      : Anthony Tilelli
