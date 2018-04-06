@@ -50,8 +50,17 @@ RSpec.describe 'ChallengeNumber ' do
       end
     end
   end
+  describe '#tell' do
+    context 'when provided a higher number' do
+      subject( :quitter ) { ChallengeNumber.new(0, 50, 35) }
+      it 'returns returns 35,, tries == 0 and win == false' do
+	 expect(quitter.win).to eql(nil)
+	 expect(quitter.tell).to eql(35)
+	 expect(quitter.win).to eql(false)
+      end
+    end
+  end
 end
 
-# tell
 # new_game!
 # convert_integer
