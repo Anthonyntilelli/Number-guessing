@@ -55,8 +55,8 @@ while game.win.nil?
   else
     input = game.guess(input)
     unless input
-       puts "Try again: Invalid Input (base 10 integer only) or out of range"
-       next
+      puts 'Try again: Invalid Input (base 10 integer only) or out of range'
+      next
     end
   end
 
@@ -65,8 +65,8 @@ while game.win.nil?
          when 0 then "You win, attempt# #{game.tries}"
          when 1 then "Try a higher number, attempt# #{game.tries}"
          else
-           #this condition should never be invoked
-           $stdout.puts "Invalid input after guess"
+           # condition should never be invoked
+           $stdout.puts "Invalid input after guess #{input}"
            exit 4
          end
   puts hint
