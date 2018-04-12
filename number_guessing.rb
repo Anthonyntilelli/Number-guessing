@@ -10,8 +10,8 @@ require 'optparse'
 require_relative 'lib/challenge_number.rb'
 
 # Defaults
-lowest_number = 0
-highest_number = 100
+lowest_number = nil
+highest_number = nil
 debug = nil
 
 begin
@@ -22,6 +22,7 @@ begin
     end
     parser.on('-M', '--Max INTEGER', Integer, 'Set Maximum number') do |max|
       highest_number = max
+      lowest_number = max - 100 if lowest_number.nil?
     end
     parser.on('-D', '--Debug INTEGER', Integer, 'Set hidden number') do |secret|
       debug = secret
@@ -37,6 +38,8 @@ rescue StandardError => e
   $stdout.puts e.message
   exit 3
 end
+lowest_number  = 0 if lowest_number.nil?
+highest_number = lowest_number + 100 if highest_number.nil?
 
 game = ChallengeNumber.new(lowest_number, highest_number, debug)
 puts 'Do you want to play a game?'
@@ -49,6 +52,7 @@ while game.win.nil?
     puts "Game over, Answer was: #{game.tell}" # quit game
     exit
   when 'N!'
+highest_number = lowest_number + 100
     puts 'New Game'
     game.new_game!(debug)
     next
