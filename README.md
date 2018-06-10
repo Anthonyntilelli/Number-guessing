@@ -1,5 +1,7 @@
 # Number_guessing - Random number guessing game
 
+> Project has moved to GitLab at https://gitlab.com/Anthonyntilelli/Number_guessing
+
 ## Table of Contents
 1. [Description](#Description)
 2. [Parameters](#Parameters)
